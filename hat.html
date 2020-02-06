@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hat Model</title>
+</head>
+
+<p> </p>
+Change Color: 
+<select id="Controls" size="5">
+    <option value="0">Red</option>
+    <option value="1">Blue</option>
+    <option value="2">Purple</option>
+    <option value="3">Green</option>
+    <option value="4">Yellow</option>
+    <option value="5">Gray</option>
+    <option value="6">Turquoise</option>
+    <option value="7">Orange</option>
+    <option value="8">Pink</option>
+</select>
+Display options:
+<select id="Display" size="3">
+    <option value="0">Colored</option>
+    <option value="1">Wireframed</option>
+    <option value="2">Textured</option>
+</select>
+<p> </p>
+
+Transperancy:
+<button id = "transparentButton">Make it visible!</button>
+<button id = "notTransparentButton">Make it invisible!</button>
+
+<p> </p>
+Size of the hat:
+<button id = "BiggerBtn">Make the hat bigger!</button>
+<button id = "SmallerBtn">Make the hat smaller!</button>
+
+<p> </p>
+
+Rotate hat: 
+<button id="RotateX">Rotate on X axis</button>
+<button id="RotateY">Rotate on Y axis</button>
+<button id="RotateZ">Rotate on Z axis</button>
+<button id="StopRotate">Toggle Rotation</button>
+<p> </p>
+
+Reposition hat: Click; 'W'=up, 'S'=down, 'A'=left, 'D'=right
+<p> </p>
+
+Projection: 
+<button id="orthogonalBtn">Orthogonal View</button>
+<button id="perspectiveBtn">Perspective View</button>
+
+<p> </p>
+
+<button id = "increaseZ">Increase Z</button>
+<button id = "decreaseZ">Decrease Z</button>
+<button id = "increaseR">Increase R</button>
+<button id = "decreaseR">Decrease R</button>
+
+<p> </p>
+<button id = "increaseTheta">Increase theta</button>
+<button id = "decreaseTheta">Decrease theta</button>
+<button id = "increasePhi">Increase phi</button>
+<button id = "decreasePhi">Decrease phi</button>
+
+<p> </p>
+
+<script id="vertex-shader1" type="x-shader/x-vertex">
+attribute  vec4 vPosition;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+varying vec4 fColor;
+
+void main() 
+{
+    gl_Position = projectionMatrix*modelViewMatrix*vPosition;
+} 
+</script>
+<script id="fragment-shader1" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform vec4 fColor;
+void
+main()
+{
+    gl_FragColor = fColor;
+}
+</script>
+
+<script id="vertex-shader2" type="x-shader/x-vertex">
+attribute  vec4 vPosition;
+attribute  vec2 vTexCoord;
+attribute  vec4 vColor;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+varying vec4 fColor;
+varying vec2 fTexCoord;
+
+void main() 
+{
+	fColor = vColor;
+    fTexCoord = vTexCoord;
+    gl_Position = projectionMatrix*modelViewMatrix*vPosition;
+} 
+</script>
+
+<script id="fragment-shader2" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform vec4 fColor;
+uniform sampler2D texture;
+
+varying  vec2 fTexCoord;
+
+void
+main()
+{
+    gl_FragColor = fColor*texture2D( texture, fTexCoord );
+}
+</script>
+
+<script type="text/javascript" src="webgl-utils.js"></script>
+<script type="text/javascript" src="initShaders.js"></script>
+<script type="text/javascript" src="MV.js"></script>
+<script type="text/javascript" src="hat.js"></script>
+
+<body>
+
+
+<canvas id="gl-canvas" width="640" height="360">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+
+
+</body>
+</html>
